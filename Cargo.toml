@@ -1,0 +1,29 @@
+[package]
+name = "get_queue"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+futures = "0.3.21"
+sc-network = { git = "https://github.com/paritytech/substrate.git" }
+sp-runtime = { git = "https://github.com/paritytech/substrate.git" }
+substrate-test-runtime-client = { git = "https://github.com/paritytech/substrate.git" }
+sc-utils = { git = "https://github.com/paritytech/substrate.git" }
+sc-network-gossip = { git = "https://github.com/paritytech/substrate.git" }
+sc-consensus = { git = "https://github.com/paritytech/substrate.git" }
+sp-consensus = { git = "https://github.com/paritytech/substrate.git" }
+sp-blockchain = { git = "https://github.com/paritytech/substrate.git" }
+async-std = "1.11.0"
+rand = "0.8.5"
+async-trait = "0.1.46"
+futures-timer = "3.0.1"
+finality-grandpa = "0.13.0"
+sc-finality-grandpa = { git = "https://github.com/paritytech/substrate.git" }
+#sc-network-test = { git = "https://github.com/paritytech/substrate.git" }
+sp-finality-grandpa = { git = "https://github.com/paritytech/substrate.git" }
+sp-core = { git = "https://github.com/paritytech/substrate.git" }
+codec = { package = "parity-scale-codec", version = "3.0.0", features = ["derive"] }
+libp2p = "0.40.0"
+log = "0.4.12"
+prometheus-endpoint = { package = "substrate-prometheus-endpoint", git = "https://github.com/paritytech/substrate.git" }
+sc-peerset = { git = "https://github.com/paritytech/substrate.git" }
