@@ -160,7 +160,8 @@ fn build_nodes_one_proto() -> (
 }
 
 #[test]
-fn notifications_state_consistent() {
+fn test_single_message_send_and_receive() {
+    //message send from node1 to node2 and vice-versa randomly.
     let (node1, mut events_stream1, node2, mut events_stream2) = build_nodes_one_proto();
 
     async_std::task::block_on(async move {
@@ -170,7 +171,6 @@ fn notifications_state_consistent() {
         let mut node2_to_node1_open = false;
         // We stop the test after a certain number of iterations.
         let mut iterations = 0;
-        // Safe guard because we don't want the test to pass if no substream has been open.
 
         loop {
             println!("iterations: {}", iterations);
@@ -235,7 +235,6 @@ fn notifications_state_consistent() {
                         node1_to_node2_open = true;
                         assert_eq!(remote, *node2.local_peer_id());
                     }
-                    // assert_eq!(protocol, PROTOCOL_NAME);
                 },
                 future::Either::Right(Event::NotificationStreamOpened {
                                           remote, protocol, ..
@@ -246,7 +245,6 @@ fn notifications_state_consistent() {
                         node2_to_node1_open = true;
                         assert_eq!(remote, *node1.local_peer_id());
                     }
-                    // assert_eq!(protocol, PROTOCOL_NAME);
                 },
                 future::Either::Left(Event::NotificationStreamClosed {
                                          remote: _, protocol: _, ..
@@ -267,7 +265,7 @@ fn notifications_state_consistent() {
                     // assert_eq!(protocol, PROTOCOL_NAME);
                 },
                 future::Either::Left(Event::NotificationsReceived { remote, messages }) => {
-                    // assert!(node1_to_node2_open);
+                    assert!(node1_to_node2_open);
                     assert_eq!(remote, *node2.local_peer_id());
                     println!("node1 receive msg: {:?}", messages[0].1);
                     if rand::random::<u8>() % 5 >= 4 {
@@ -280,7 +278,7 @@ fn notifications_state_consistent() {
                     }
                 },
                 future::Either::Right(Event::NotificationsReceived { remote, messages }) => {
-                    // assert!(node2_to_node1_open);
+                    assert!(node2_to_node1_open);
                     assert_eq!(remote, *node1.local_peer_id());
                     println!("node2 receive msg: {:?}", messages[0].1);
                     if rand::random::<u8>() % 5 >= 4 {
@@ -334,7 +332,7 @@ fn pressure_test() {
     });
 
     async_std::task::block_on(async move {
-        // Break loof after stream opened
+        // Break loop after stream opened
         loop {
             match events_stream1.next().await.unwrap() {
                 Event::NotificationStreamOpened { .. } => break,
